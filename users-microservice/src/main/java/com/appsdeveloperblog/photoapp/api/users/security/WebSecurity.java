@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.appsdeveloperblog.photoapp.api.users.service.UsersService;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -52,9 +53,9 @@ public class WebSecurity {
                 .csrf().disable().authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-                .requestMatchers("/users/ip").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/users/ip")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
 
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
